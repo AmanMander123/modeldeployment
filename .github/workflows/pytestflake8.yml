@@ -20,7 +20,15 @@ jobs:
             python -m pip install --upgrade pip # Upgrade pip to the latest version.
             pip install pytest flake8 # Install pytest and flake8
             if [ -f requirements.txt ]; then pip install -r requirements.txt; fi # If we have a requirements.txt, then install it.
-        - name: Test with pytest # Final action which runs pytest. If any test fails, then this Action fails.
+    
+        - name: Configure AWS Credentials
+          uses: aws-actions/configure-aws-credentials@v1
+          with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+        
+        - name: Test with pytest and flake8 # Final action which runs pytest and flake8. If any test fails, then this Action fails.
           run: |
             pytest
-            flake8
+            flake8 .
