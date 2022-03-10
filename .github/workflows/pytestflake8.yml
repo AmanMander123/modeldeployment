@@ -27,6 +27,12 @@ jobs:
             aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
             aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             aws-region: us-east-1
+            
+        - name: Setup DVC
+          uses: iterative/setup-dvc@v1
+          
+        - name: Pull DVC artifacts
+          run: dvc pull
         
         - name: Test with pytest and flake8 # Final action which runs pytest and flake8. If any test fails, then this Action fails.
           run: |
